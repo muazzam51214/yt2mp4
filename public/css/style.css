@@ -1,0 +1,34 @@
+/* Use Outfit Font Everywhere */
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: #f8f9fa; /* Light background */
+}
+
+/* Hero Section */
+.hero-section {
+  height: 90vh;
+  background: linear-gradient(135deg, #6d5dfc, #46c2f0);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Buttons on Result Page */
+.btn-primary {
+  background-color: #6d5dfc;
+  border-color: #6d5dfc;
+}
+
+.btn-success {
+  background-color: #46c2f0;
+  border-color: #46c2f0;
+}
+
+/* Form input bigger */
+input.form-control {
+  padding: 1rem;
+  font-size: 1.2rem;
+}
