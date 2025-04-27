@@ -1,4 +1,4 @@
-import { YtDlpWrap } from 'yt-dlp-wrap';
+import { default as YtDlpWrap } from 'yt-dlp-wrap';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
