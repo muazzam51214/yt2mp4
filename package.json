@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "postinstall": "npm run install-deps && npm run install-yt-dlp",
-    "install-deps": "apt-get update && apt-get install -y python3 || true",
+    "install-deps": "apt-get update && apt-get install -y python3 ffmpeg || true",
     "install-yt-dlp": "curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o yt-dlp && chmod a+rx yt-dlp",
     "dev": "nodemon server.js",
     "start": "node server.js"

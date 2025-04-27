@@ -39,45 +39,42 @@ export const downloadMp3 = async (req, res, next) => {
   }
 
   try {
-    // Fetch the video info using yt-dlp
+    // Set output filename (using video ID or timestamp)
+    const filename = `audio-${Date.now()}.mp3`;
+    
+    // Set response headers for MP3 download
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Type', 'audio/mpeg');
+
+    // yt-dlp options for direct MP3 conversion
     const options = [
-      '--dump-json', // Dump JSON metadata of the video
+      '-x', // Extract audio
+      '--audio-format', 'mp3', // Convert to MP3
+      '--audio-quality', '0', // Best quality
       '--add-header', 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+      '-o', '-', // Output to stdout
       videoUrl
     ];
 
-    const execResult = await ytDlpWrap.execPromise(options);
-    const videoInfo = JSON.parse(execResult);
+    // Get the MP3 stream directly from yt-dlp
+    const mp3Stream = ytDlpWrap.execStream(options);
+    
+    // Pipe the MP3 stream directly to the response
+    mp3Stream.pipe(res);
 
-    // Find the best audio format (m4a, webm, etc.)
-    const bestAudioFormat = videoInfo.formats.find(format =>
-      format.acodec !== 'none' && (format.ext === 'm4a' || format.ext === 'webm' || format.ext === 'opus')
-    );
-
-    if (!bestAudioFormat) {
-      return res.status(404).send('No suitable audio format found.');
-    }
-
-    // Get the audio URL
-    const audioUrl = bestAudioFormat.url;
-
-    // Set the response headers to indicate a downloadable file
-    const filename = `audio.${bestAudioFormat.ext}`;
-    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
-    res.setHeader('Content-Type', `audio/${bestAudioFormat.ext}`);
-
-    // Stream the audio directly to the user
-    const audioStream = await axios({
-      method: 'get',
-      url: audioUrl,
-      responseType: 'stream'
+    // Handle errors
+    mp3Stream.on('error', (error) => {
+      console.error('Stream error:', error);
+      if (!res.headersSent) {
+        res.status(500).send('Error during audio conversion');
+      }
     });
-
-    audioStream.data.pipe(res);
 
   } catch (error) {
     console.error('Error downloading audio:', error);
-    res.status(500).send('Error downloading audio');
+    if (!res.headersSent) {
+      res.status(500).send('Error downloading audio');
+    }
   }
 };
 
