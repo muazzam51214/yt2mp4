@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Create new instance with explicit binary path
-const ytDlpWrap = new YtDlpWrap(path.join(__dirname, '../../yt-dlp'));
+const ytDlpWrap = new YtDlpWrap(path.join(__dirname, '../yt-dlp'));
 
 // Verify yt-dlp is working at startup
 (async () => {
