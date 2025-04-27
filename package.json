@@ -5,6 +5,8 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
+    "postinstall": "npm run install-yt-dlp",
+    "install-yt-dlp": "curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /tmp/yt-dlp && chmod a+rx /tmp/yt-dlp && mv /tmp/yt-dlp /app/yt-dlp",
     "dev": "nodemon server.js",
     "start": "node server.js"
   },
