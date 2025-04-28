@@ -23,9 +23,20 @@ export const getStream = async (req, res, next) => {
       (f) => f.acodec !== "none" && (f.ext === "m4a" || f.ext === "webm")
     );
 
+    // Format duration from seconds to HH:MM:SS
+    const formatDuration = (seconds) => {
+      const date = new Date(0);
+      date.setSeconds(seconds);
+      return date.toISOString().substring(11, 19);
+    };
+
     res.render("result", {
       stream: bestVideoFormat?.url || null,
       audioStream: bestAudioFormat?.url || null,
+      title: videoInfo.title || "YouTube Video",
+      thumbnail: videoInfo.thumbnail || null,
+      duration: videoInfo.duration ? formatDuration(videoInfo.duration) : "00:00",
+      currentPage: 'result'
     });
   } catch (error) {
     next(error);
@@ -112,5 +123,21 @@ export const downloadVideo = async (req, res) => {
 };
 
 export const homePage = (req, res) => {
-  res.render("home");
+  res.render("home", { currentPage: 'home' });
+};
+
+export const faqsPage = (req, res) => {
+  res.render("faqs", { currentPage: 'faqs' });
+};
+
+export const aboutPage = (req, res) => {
+  res.render("about", { currentPage: 'about' });
+};
+
+export const termPage = (req, res) => {
+  res.render("term", { currentPage: 'terms' });
+};
+
+export const privacyPage = (req, res) => {
+  res.render("privacy", { currentPage: 'privacy' });
 };

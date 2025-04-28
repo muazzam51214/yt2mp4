@@ -7,7 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Proper way to get the constructor in ESM
 const YtDlpWrap = ytDlpWrapDefault.default;
-const ytDlpWrap = new YtDlpWrap(path.join(__dirname, '../yt-dlp'));
+const ytDlpWrap = new YtDlpWrap('../yt-dlp');
 
 // Verify yt-dlp is working at startup
 (async () => {
