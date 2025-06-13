@@ -12,7 +12,14 @@ export const getStream = async (req, res, next) => {
   if (!url) return res.status(400).send("Missing video URL.");
 
   try {
-    const options = ["--cookies", "./yt-cookies.txt", "--dump-json", url];
+    const options = [
+      "--cookies",
+      "./yt-cookies.txt",
+      "--user-agent",
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+      "--dump-json",
+      url,
+    ];
     const execResult = await ytDlpWrap.execPromise(options);
     const videoInfo = JSON.parse(execResult);
 
