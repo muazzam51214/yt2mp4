@@ -9,6 +9,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const YtDlpWrap = ytDlpWrapDefault.default;
 const ytDlpWrap = new YtDlpWrap(path.join(__dirname, '../yt-dlp'));
 
+
 // Verify yt-dlp is working at startup
 (async () => {
   try {
