@@ -1,5 +1,7 @@
 import ytDlpWrap from "../config/ytDlp.js";
-import axios from "axios";
+import path from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
 export const handleFormSubmit = async (req, res) => {
   const { url } = req.body;
@@ -12,7 +14,17 @@ export const getStream = async (req, res, next) => {
   if (!url) return res.status(400).send("Missing video URL.");
 
   try {
-    const options = ["--cookies", "yt-cookies.txt", "--dump-json", url];
+    // Required when using ES modules
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+
+    const options = [
+      "--cookies",
+      path.join(__dirname, "yt-cookies.txt"),
+      "--dump-json",
+      url,
+    ];
+
     const execResult = await ytDlpWrap.execPromise(options);
     const videoInfo = JSON.parse(execResult);
 
